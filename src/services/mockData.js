@@ -1,0 +1,500 @@
+export const INITIAL_STUDENTS = [
+  {
+    id: 'a1111111-1111-1111-1111-111111111101',
+    college_id: 'E0223001',
+    name: 'Aarav Sharma',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'aarav.sharma@college.edu',
+    work_personal_email: 'aarav.dev@gmail.com',
+    phone: '+91 98765 43210',
+    cgpa: 9.15,
+    current_arrears: 0,
+    arrears_history: 0,
+    tenth_percentage: 94.5,
+    twelfth_percentage: 91.2,
+    github_url: 'https://github.com/aaravsharma',
+    linkedin_url: 'https://linkedin.com/in/aaravsharma',
+    leetcode_url: 'https://leetcode.com/aaravsharma',
+    portfolio_url: 'https://aarav.dev',
+    placement_status: 'Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-31T18:00:00Z'
+  },
+  {
+    id: 'a1111111-1111-1111-1111-111111111102',
+    college_id: 'E0223002',
+    name: 'Priya Raman',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'priya.raman@college.edu',
+    work_personal_email: 'priyaraman.work@outlook.com',
+    phone: '+91 98765 43211',
+    cgpa: 8.85,
+    current_arrears: 0,
+    arrears_history: 0,
+    tenth_percentage: 96.0,
+    twelfth_percentage: 93.4,
+    github_url: 'https://github.com/priyaraman',
+    linkedin_url: 'https://linkedin.com/in/priyaraman',
+    leetcode_url: 'https://leetcode.com/priyaraman',
+    portfolio_url: 'https://priya.portfolio.site',
+    placement_status: 'Not Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-09-02T14:00:00Z'
+  },
+  {
+    id: 'a1111111-1111-1111-1111-111111111103',
+    college_id: 'E0223003',
+    name: 'Rohan Verma',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'rohan.v@college.edu',
+    work_personal_email: 'rohanverma.code@gmail.com',
+    phone: '+91 98765 43212',
+    cgpa: 7.92,
+    current_arrears: 0,
+    arrears_history: 1,
+    tenth_percentage: 88.0,
+    twelfth_percentage: 84.6,
+    github_url: 'https://github.com/rohanverma',
+    linkedin_url: 'https://linkedin.com/in/rohanverma',
+    leetcode_url: 'https://leetcode.com/rohanverma',
+    portfolio_url: '',
+    placement_status: 'Not Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-09-03T11:00:00Z'
+  },
+  {
+    id: 'a1111111-1111-1111-1111-111111111104',
+    college_id: 'E0223004',
+    name: 'Ananya Iyer',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'ananya.i@college.edu',
+    work_personal_email: 'ananya.iyer99@gmail.com',
+    phone: '+91 98765 43213',
+    cgpa: 8.40,
+    current_arrears: 0,
+    arrears_history: 0,
+    tenth_percentage: 91.5,
+    twelfth_percentage: 87.8,
+    github_url: 'https://github.com/ananyaiyer',
+    linkedin_url: 'https://linkedin.com/in/ananyaiyer',
+    leetcode_url: 'https://leetcode.com/ananyaiyer',
+    portfolio_url: 'https://ananya.me',
+    placement_status: 'Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-09-06T16:00:00Z'
+  },
+  {
+    id: 'a1111111-1111-1111-1111-111111111105',
+    college_id: 'E0223005',
+    name: 'Karthik Raja',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'karthik.r@college.edu',
+    work_personal_email: 'karthik.raja22@gmail.com',
+    phone: '+91 98765 43214',
+    cgpa: 6.85,
+    current_arrears: 1,
+    arrears_history: 2,
+    tenth_percentage: 79.0,
+    twelfth_percentage: 74.5,
+    github_url: 'https://github.com/karthikraja',
+    linkedin_url: 'https://linkedin.com/in/karthikraja',
+    leetcode_url: '',
+    portfolio_url: '',
+    placement_status: 'Not Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-09-05T12:00:00Z'
+  },
+  {
+    id: 'a1111111-1111-1111-1111-111111111106',
+    college_id: 'E0223006',
+    name: 'Sneha Kulkarni',
+    department: 'Cybersecurity and IoT',
+    batch: '2023–2027',
+    college_email: 'sneha.k@college.edu',
+    work_personal_email: 'sneha.ml@gmail.com',
+    phone: '+91 98765 43215',
+    cgpa: 9.35,
+    current_arrears: 0,
+    arrears_history: 0,
+    tenth_percentage: 98.2,
+    twelfth_percentage: 95.0,
+    github_url: 'https://github.com/snehakulkarni',
+    linkedin_url: 'https://linkedin.com/in/snehakulkarni',
+    leetcode_url: 'https://leetcode.com/snehakulkarni',
+    portfolio_url: 'https://sneha.ai',
+    placement_status: 'Placed',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-31T18:00:00Z'
+  }
+];
+
+export const INITIAL_COMPANIES = [
+  {
+    id: 'c1111111-1111-1111-1111-111111111101',
+    name: 'Google Cloud',
+    description: 'Software Engineer (L3) campus recruitment for core distributed storage, network infrastructure and developer APIs.',
+    salary_package: '32 LPA',
+    opportunity_type: 'Full-time',
+    drive_type: 'On Campus',
+    min_tenth_percentage: 75.0,
+    min_twelfth_percentage: 75.0,
+    min_cgpa: 8.0,
+    current_arrears_allowed: false,
+    arrears_history_allowed: false,
+    notified_date: '2026-08-15',
+    status: 'Completed',
+    working_hours: '9:30 AM - 5:30 PM (Mon-Fri)',
+    leave_policy: '24 days paid vacation + 12 wellness days + festival holidays',
+    wfh_info: 'Hybrid (3 days in office / 2 days remote)',
+    created_at: '2026-08-15T09:00:00Z',
+    updated_at: '2026-08-31T20:00:00Z'
+  },
+  {
+    id: 'c1111111-1111-1111-1111-111111111102',
+    name: 'Microsoft',
+    description: 'Software Development Engineer (SDE) role across Azure Distributed Systems, Teams, and Cloud Intelligence.',
+    salary_package: '28.5 LPA',
+    opportunity_type: 'FTE + Internship',
+    drive_type: 'On Campus',
+    min_tenth_percentage: 70.0,
+    min_twelfth_percentage: 70.0,
+    min_cgpa: 7.5,
+    current_arrears_allowed: false,
+    arrears_history_allowed: true,
+    notified_date: '2026-08-20',
+    status: 'In Process',
+    working_hours: '9:00 AM - 6:00 PM (Flexible hours)',
+    leave_policy: '20 days annual earned leave + 10 personal wellness leaves',
+    wfh_info: 'Hybrid (Up to 50% work from home permitted)',
+    created_at: '2026-08-20T09:00:00Z',
+    updated_at: '2026-09-02T10:00:00Z'
+  },
+  {
+    id: 'c1111111-1111-1111-1111-111111111103',
+    name: 'Zoho Corporation',
+    description: 'Member Technical Staff (MTS) for high-performance enterprise SaaS, database engineering, and full stack web products.',
+    salary_package: '9.5 LPA',
+    opportunity_type: 'Full-time',
+    drive_type: 'On Campus',
+    min_tenth_percentage: 60.0,
+    min_twelfth_percentage: 60.0,
+    min_cgpa: 6.5,
+    current_arrears_allowed: true,
+    arrears_history_allowed: true,
+    notified_date: '2026-09-01',
+    status: 'In Process',
+    working_hours: '8:30 AM - 5:30 PM (Mon-Fri)',
+    leave_policy: '18 days annual paid leave + medical benefits',
+    wfh_info: 'On-site campus environment (Tenkasi / Chennai campuses)',
+    created_at: '2026-09-01T09:00:00Z',
+    updated_at: '2026-09-06T18:00:00Z'
+  },
+  {
+    id: 'c1111111-1111-1111-1111-111111111104',
+    name: 'TCS Digital',
+    description: 'Systems Engineer Digital role focusing on Full Stack, Cloud native microservices, and AI integrations.',
+    salary_package: '7.5 LPA',
+    opportunity_type: 'Full-time',
+    drive_type: 'Off Campus',
+    min_tenth_percentage: 60.0,
+    min_twelfth_percentage: 60.0,
+    min_cgpa: 7.0,
+    current_arrears_allowed: false,
+    arrears_history_allowed: true,
+    notified_date: '2026-09-05',
+    status: 'Notified',
+    working_hours: '9:00 AM - 6:00 PM (Mon-Fri)',
+    leave_policy: '16 days privileged leave + 8 casual leaves',
+    wfh_info: 'Client dependent / Hybrid working policy',
+    created_at: '2026-09-05T09:00:00Z',
+    updated_at: '2026-09-05T09:00:00Z'
+  }
+];
+
+export const INITIAL_ROUNDS = [
+  // Google Rounds
+  {
+    id: 'r1111111-1111-1111-1111-111111111101',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    round_number: 1,
+    round_type: 'Online Assessment',
+    round_date: '2026-08-22',
+    details: 'Google Online Challenge on HackerEarth - 2 algorithmic problems, 60 minutes.',
+    created_at: '2026-08-15T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111102',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    round_number: 2,
+    round_type: 'Technical Round 1',
+    round_date: '2026-08-27',
+    details: 'Data Structures, Dynamic Programming, Graphs & Trees (Google Meet, 45 mins).',
+    created_at: '2026-08-15T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111103',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    round_number: 3,
+    round_type: 'Technical Round 2',
+    round_date: '2026-08-28',
+    details: 'System Design basics, Concurrency, and OS memory management internals.',
+    created_at: '2026-08-15T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111104',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    round_number: 4,
+    round_type: 'Googliness & Leadership',
+    round_date: '2026-08-30',
+    details: 'Behavioral, teamwork under ambiguity, diversity, and leadership scenarios.',
+    created_at: '2026-08-15T10:00:00Z'
+  },
+  // Microsoft Rounds
+  {
+    id: 'r1111111-1111-1111-1111-111111111105',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    round_number: 1,
+    round_type: 'Online Coding Round',
+    round_date: '2026-08-29',
+    details: 'Codility test platform - 3 coding questions, 90 mins.',
+    created_at: '2026-08-20T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111106',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    round_number: 2,
+    round_type: 'Technical Interview 1',
+    round_date: '2026-09-10',
+    details: 'Live coding problem solving, Trees, Hash tables, Time/Space complexities.',
+    created_at: '2026-08-20T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111107',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    round_number: 3,
+    round_type: 'AA (As Appropriate) Round',
+    round_date: '2026-09-14',
+    details: 'Principal Engineering manager round: system design & cultural values.',
+    created_at: '2026-08-20T10:00:00Z'
+  },
+  // Zoho Rounds
+  {
+    id: 'r1111111-1111-1111-1111-111111111108',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    round_number: 1,
+    round_type: 'Written Aptitude & C Logic',
+    round_date: '2026-09-08',
+    details: 'Pen-and-paper / online logic, math puzzles, and C dry-run tracing.',
+    created_at: '2026-09-01T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111109',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    round_number: 2,
+    round_type: 'Basic Programming',
+    round_date: '2026-09-12',
+    details: '5 core programming scenarios in C/Java (Strings, Arrays, Pointers).',
+    created_at: '2026-09-01T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111110',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    round_number: 3,
+    round_type: 'Advanced Programming & System Design',
+    round_date: '2026-09-15',
+    details: 'Implement miniature working console system (Railway / Taxi reservation logic).',
+    created_at: '2026-09-01T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111111',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    round_number: 4,
+    round_type: 'HR Interview',
+    round_date: '2026-09-16',
+    details: 'Final HR discussion, communication, career aspirations & campus posting.',
+    created_at: '2026-09-01T10:00:00Z'
+  },
+  // TCS Rounds
+  {
+    id: 'r1111111-1111-1111-1111-111111111112',
+    company_id: 'c1111111-1111-1111-1111-111111111104',
+    round_number: 1,
+    round_type: 'National Qualifier Test (NQT)',
+    round_date: '2026-09-22',
+    details: 'TCS iON cognitive assessment & Advanced Hands-on Coding section.',
+    created_at: '2026-09-05T10:00:00Z'
+  },
+  {
+    id: 'r1111111-1111-1111-1111-111111111113',
+    company_id: 'c1111111-1111-1111-1111-111111111104',
+    round_number: 2,
+    round_type: 'Technical & HR Combined Interview',
+    round_date: '2026-09-28',
+    details: 'Panel interview covering project work, DBMS, and HR verification.',
+    created_at: '2026-09-05T10:00:00Z'
+  }
+];
+
+export const INITIAL_APPLICATIONS = [
+  // Google Cloud Apps
+  {
+    id: 'app-001',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    student_id: 'a1111111-1111-1111-1111-111111111101',
+    status: 'Selected',
+    current_round_id: 'r1111111-1111-1111-1111-111111111104',
+    outcome_round_id: 'r1111111-1111-1111-1111-111111111104',
+    outcome_date: '2026-08-31',
+    not_applied_reason: '',
+    notes: 'Offered SWE L3. Outstanding performance in Graph and Concurrency rounds.',
+    created_at: '2026-08-16T10:00:00Z',
+    updated_at: '2026-08-31T20:00:00Z'
+  },
+  {
+    id: 'app-002',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    student_id: 'a1111111-1111-1111-1111-111111111102',
+    status: 'Rejected',
+    current_round_id: 'r1111111-1111-1111-1111-111111111102',
+    outcome_round_id: 'r1111111-1111-1111-1111-111111111102',
+    outcome_date: '2026-08-28',
+    not_applied_reason: '',
+    notes: 'Cleared OA with top score; eliminated in Technical Round 1 on Dynamic Programming edge cases.',
+    created_at: '2026-08-16T10:00:00Z',
+    updated_at: '2026-08-28T18:00:00Z'
+  },
+  {
+    id: 'app-003',
+    company_id: 'c1111111-1111-1111-1111-111111111101',
+    student_id: 'a1111111-1111-1111-1111-111111111105',
+    status: 'Did Not Apply',
+    current_round_id: null,
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: 'Company cutoff was min 7.5 CGPA; student currently has 1 standing arrear.',
+    notes: 'Ineligible based on minimum criteria.',
+    created_at: '2026-08-16T10:00:00Z',
+    updated_at: '2026-08-17T12:00:00Z'
+  },
+  // Microsoft Apps
+  {
+    id: 'app-004',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    student_id: 'a1111111-1111-1111-1111-111111111102',
+    status: 'In Process',
+    current_round_id: 'r1111111-1111-1111-1111-111111111106',
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: '',
+    notes: 'Cleared Codility OA (100% score). Scheduled for Technical Interview 1 on Sept 10.',
+    created_at: '2026-08-21T10:00:00Z',
+    updated_at: '2026-09-02T10:00:00Z'
+  },
+  {
+    id: 'app-005',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    student_id: 'a1111111-1111-1111-1111-111111111103',
+    status: 'In Process',
+    current_round_id: 'r1111111-1111-1111-1111-111111111106',
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: '',
+    notes: 'Cleared Round 1 OA. Prepped on Tree data structures and OS concepts.',
+    created_at: '2026-08-21T10:00:00Z',
+    updated_at: '2026-09-02T10:00:00Z'
+  },
+  {
+    id: 'app-006',
+    company_id: 'c1111111-1111-1111-1111-111111111102',
+    student_id: 'a1111111-1111-1111-1111-111111111101',
+    status: 'Did Not Apply',
+    current_round_id: null,
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: 'Already secured Google offer (32 LPA). Opted out under institute placement policy.',
+    notes: 'Single dream offer policy opt-out.',
+    created_at: '2026-08-21T10:00:00Z',
+    updated_at: '2026-08-22T09:00:00Z'
+  },
+  // Zoho Apps
+  {
+    id: 'app-007',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    student_id: 'a1111111-1111-1111-1111-111111111104',
+    status: 'Selected',
+    current_round_id: 'r1111111-1111-1111-1111-111111111111',
+    outcome_round_id: 'r1111111-1111-1111-1111-111111111111',
+    outcome_date: '2026-09-06',
+    not_applied_reason: '',
+    notes: 'Selected for Member Technical Staff (MTS). Built complete reservation prototype during round 3.',
+    created_at: '2026-09-02T10:00:00Z',
+    updated_at: '2026-09-06T18:00:00Z'
+  },
+  {
+    id: 'app-008',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    student_id: 'a1111111-1111-1111-1111-111111111105',
+    status: 'In Process',
+    current_round_id: 'r1111111-1111-1111-1111-111111111108',
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: '',
+    notes: 'Registered for Written Aptitude round scheduled for Sept 8.',
+    created_at: '2026-09-02T10:00:00Z',
+    updated_at: '2026-09-02T10:00:00Z'
+  },
+  {
+    id: 'app-009',
+    company_id: 'c1111111-1111-1111-1111-111111111103',
+    student_id: 'a1111111-1111-1111-1111-111111111106',
+    status: 'Did Not Apply',
+    current_round_id: null,
+    outcome_round_id: null,
+    outcome_date: null,
+    not_applied_reason: 'Pursuing MS in Artificial Intelligence / Research positions exclusively.',
+    notes: 'Higher studies opt-out submitted to placement cell.',
+    created_at: '2026-09-02T10:00:00Z',
+    updated_at: '2026-09-02T11:00:00Z'
+  }
+];
+
+export const INITIAL_DRIVE_LINKS = [
+  {
+    id: 'dl-1',
+    title: 'Student Resumes',
+    url: 'https://drive.google.com/drive/folders/1aBcDeFgHiJkLmNoPqRsTuVwXyZ-resumes',
+    description: 'Central Google Drive folder containing verified student resumes for the 2023–2027 batch.',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-01T10:00:00Z'
+  },
+  {
+    id: 'dl-2',
+    title: 'Placement Documents',
+    url: 'https://drive.google.com/drive/folders/2bCdEfGhIjKlMnOpQrStUvWxYz-placement',
+    description: 'Placement policy handbook, student NOC consent forms, and drive eligibility criteria.',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-01T10:00:00Z'
+  },
+  {
+    id: 'dl-3',
+    title: 'Company Documents',
+    url: 'https://drive.google.com/drive/folders/3cDeFgHiJkLmNoPqRsTuVwXyZa-companies',
+    description: 'Recruiting company Job Descriptions (JDs), campus brochures, test links, and coordinator contacts.',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-01T10:00:00Z'
+  },
+  {
+    id: 'dl-4',
+    title: 'Internship Documents',
+    url: 'https://drive.google.com/drive/folders/4dEfGhIjKlMnOpQrStUvWxYzAb-internships',
+    description: 'Summer and winter internship completion certificates, offer letters, and mentor assessment rubrics.',
+    created_at: '2026-08-01T10:00:00Z',
+    updated_at: '2026-08-01T10:00:00Z'
+  }
+];
+
