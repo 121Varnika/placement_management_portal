@@ -1,10 +1,24 @@
 import { getSupabaseClient } from '../lib/supabase';
-import { sanitizeStudent } from './studentsService';
+import { sanitizeStudent, updateStudent } from './studentsService';
+import { 
+  getMockApplications, 
+  setMockApplications, 
+  getMockStudents,
+  getMockCompanies 
+} from './mockData';
 
 export async function getCompanyApplications(companyId) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    const apps = getMockApplications().filter((a) => a.company_id === companyId);
+    const students = getMockStudents();
+    return apps.map((app) => {
+      const studentObj = students.find((s) => s.id === app.student_id);
+      return {
+        ...app,
+        students: sanitizeStudent(studentObj || null)
+      };
+    });
   }
 
   const { data, error } = await client
@@ -29,7 +43,15 @@ export async function getCompanyApplications(companyId) {
 export async function getStudentApplications(studentId) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    const apps = getMockApplications().filter((a) => a.student_id === studentId);
+    const companies = getMockCompanies();
+    return apps.map((app) => {
+      const compObj = companies.find((c) => c.id === app.company_id);
+      return {
+        ...app,
+        companies: compObj || null
+      };
+    });
   }
 
   const { data, error } = await client
@@ -49,16 +71,39 @@ export async function getStudentApplications(studentId) {
 }
 
 export async function saveApplication(applicationData) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const { students, companies, ...pureData } = applicationData;
   const payload = {
     ...pureData,
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const apps = getMockApplications();
+    const idx = apps.findIndex(
+      (a) => (a.id && a.id === payload.id) || (a.company_id === payload.company_id && a.student_id === payload.student_id)
+    );
+
+    let savedApp;
+    if (idx !== -1) {
+      apps[idx] = { ...apps[idx], ...payload };
+      savedApp = apps[idx];
+    } else {
+      savedApp = { ...payload, id: payload.id || `app-${Date.now()}`, created_at: new Date().toISOString() };
+      apps.push(savedApp);
+    }
+    setMockApplications(apps);
+
+    if (payload.status === 'Selected' && payload.student_id) {
+      await updateStudent(payload.student_id, { placement_status: 'Placed' });
+    }
+
+    const studentObj = getMockStudents().find((s) => s.id === savedApp.student_id);
+    return {
+      ...savedApp,
+      students: sanitizeStudent(studentObj || null)
+    };
+  }
 
   const { data, error } = await client
     .from('student_applications')
@@ -95,7 +140,8 @@ export async function saveApplication(applicationData) {
 export async function deleteApplication(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    setMockApplications(getMockApplications().filter((a) => a.id !== id));
+    return true;
   }
 
   const { error } = await client
@@ -112,13 +158,19 @@ export async function deleteApplication(id) {
 }
 
 export async function bulkSaveApplications(applicationsToSave) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   if (!applicationsToSave || applicationsToSave.length === 0) {
     return [];
+  }
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const apps = [...getMockApplications()];
+    const result = [];
+    for (const app of applicationsToSave) {
+      const saved = await saveApplication(app);
+      result.push(saved);
+    }
+    return result;
   }
 
   const cleanedPayloads = applicationsToSave.map((app) => {
@@ -163,3 +215,4 @@ export async function bulkSaveApplications(applicationsToSave) {
     students: sanitizeStudent(app.students)
   }));
 }
+

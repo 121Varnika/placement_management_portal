@@ -1,34 +1,52 @@
 import { getSupabaseClient } from '../lib/supabase';
 import { sanitizeStudent } from './studentsService';
 import { sanitizeCompany } from './companiesService';
+import { 
+  getMockStudents, 
+  getMockCompanies, 
+  getMockApplications, 
+  getMockRounds 
+} from './mockData';
 
 export async function getDashboardData() {
   const client = getSupabaseClient();
+  
+  let rawStudents = [];
+  let rawCompanies = [];
+  let apps = [];
+  let allRounds = [];
+
   if (!client) {
-    throw new Error('Database client not initialized.');
+    rawStudents = getMockStudents();
+    rawCompanies = getMockCompanies();
+    apps = getMockApplications();
+    allRounds = getMockRounds();
+  } else {
+    const [
+      { data: students, error: stdErr },
+      { data: companies, error: cmpErr },
+      { data: applications, error: appErr },
+      { data: rounds, error: rndErr }
+    ] = await Promise.all([
+      client.from('students').select('*'),
+      client.from('companies').select('*').order('notified_date', { ascending: false }),
+      client.from('student_applications').select('*'),
+      client.from('selection_rounds').select('*')
+    ]);
+
+    if (stdErr) console.error('Error fetching students for dashboard:', stdErr);
+    if (cmpErr) console.error('Error fetching companies for dashboard:', cmpErr);
+    if (appErr) console.error('Error fetching applications for dashboard:', appErr);
+    if (rndErr) console.error('Error fetching rounds for dashboard:', rndErr);
+
+    rawStudents = students || [];
+    rawCompanies = companies || [];
+    apps = applications || [];
+    allRounds = rounds || [];
   }
 
-  const [
-    { data: students, error: stdErr },
-    { data: companies, error: cmpErr },
-    { data: applications, error: appErr },
-    { data: rounds, error: rndErr }
-  ] = await Promise.all([
-    client.from('students').select('*'),
-    client.from('companies').select('*').order('notified_date', { ascending: false }),
-    client.from('student_applications').select('*'),
-    client.from('selection_rounds').select('*')
-  ]);
-
-  if (stdErr) console.error('Error fetching students for dashboard:', stdErr);
-  if (cmpErr) console.error('Error fetching companies for dashboard:', cmpErr);
-  if (appErr) console.error('Error fetching applications for dashboard:', appErr);
-  if (rndErr) console.error('Error fetching rounds for dashboard:', rndErr);
-
-  const cleanStudents = (students || []).map(sanitizeStudent);
-  const cleanCompanies = (companies || []).map(sanitizeCompany);
-  const apps = applications || [];
-  const allRounds = rounds || [];
+  const cleanStudents = rawStudents.map(sanitizeStudent);
+  const cleanCompanies = rawCompanies.map(sanitizeCompany);
 
   // Metrics calculation
   const totalCompanies = cleanCompanies.length;
@@ -113,3 +131,4 @@ export async function getDashboardData() {
     recentApplications: apps.slice(0, 10)
   };
 }
+

@@ -13,10 +13,25 @@ export function isSupabaseConfigured() {
   );
 }
 
+export function isDemoMode() {
+  if (!isSupabaseConfigured()) {
+    return true;
+  }
+  return localStorage.getItem('pmp_demo_mode') === 'true';
+}
+
+export function setDemoMode(enabled) {
+  if (enabled) {
+    localStorage.setItem('pmp_demo_mode', 'true');
+  } else {
+    localStorage.removeItem('pmp_demo_mode');
+  }
+}
+
 let supabaseInstance = null;
 
 export function getSupabaseClient() {
-  if (!isSupabaseConfigured()) {
+  if (isDemoMode() || !isSupabaseConfigured()) {
     return null;
   }
 
@@ -41,3 +56,4 @@ export function getSupabaseClient() {
 
 // Direct singleton export
 export const supabase = getSupabaseClient();
+

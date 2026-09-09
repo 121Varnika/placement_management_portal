@@ -1,9 +1,41 @@
-import { getSupabaseClient, isSupabaseConfigured } from '../lib/supabase';
+import { getSupabaseClient, isSupabaseConfigured, isDemoMode, setDemoMode } from '../lib/supabase';
 
-export async function signIn(email, password) {
+export const MOCK_DEMO_USER = {
+  id: 'demo-mentor-001',
+  email: 'demo.mentor@college.edu',
+  user_metadata: {
+    full_name: 'Dr. S. Placement Mentor',
+    role: 'Placement Coordinator',
+    department: 'Cybersecurity and IoT'
+  }
+};
+
+export const MOCK_DEMO_SESSION = {
+  access_token: 'mock-demo-access-token',
+  user: MOCK_DEMO_USER
+};
+
+const authListeners = new Set();
+
+function notifyListeners(event, session) {
+  authListeners.forEach((callback) => {
+    try {
+      callback(event, session);
+    } catch (e) {
+      console.error('Auth listener error:', e);
+    }
+  });
+}
+
+export async function signIn(email, password, forceDemo = false) {
   const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Supabase is not configured. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local');
+  
+  if (!client || forceDemo || !isSupabaseConfigured()) {
+    setDemoMode(true);
+    localStorage.setItem('pmp_demo_authenticated', 'true');
+    const data = { user: MOCK_DEMO_USER, session: MOCK_DEMO_SESSION };
+    notifyListeners('SIGNED_IN', MOCK_DEMO_SESSION);
+    return data;
   }
 
   const { data, error } = await client.auth.signInWithPassword({
@@ -20,7 +52,11 @@ export async function signIn(email, password) {
 
 export async function signOut() {
   const client = getSupabaseClient();
-  if (!client) return;
+  if (!client || isDemoMode()) {
+    localStorage.removeItem('pmp_demo_authenticated');
+    notifyListeners('SIGNED_OUT', null);
+    return;
+  }
 
   const { error } = await client.auth.signOut();
   if (error) {
@@ -31,7 +67,10 @@ export async function signOut() {
 
 export async function getSession() {
   const client = getSupabaseClient();
-  if (!client) return null;
+  if (!client || isDemoMode()) {
+    const isAuth = localStorage.getItem('pmp_demo_authenticated') === 'true';
+    return isAuth ? MOCK_DEMO_SESSION : null;
+  }
 
   try {
     const { data: { session }, error } = await client.auth.getSession();
@@ -48,7 +87,10 @@ export async function getSession() {
 
 export async function getCurrentUser() {
   const client = getSupabaseClient();
-  if (!client) return null;
+  if (!client || isDemoMode()) {
+    const session = await getSession();
+    return session?.user || null;
+  }
 
   try {
     const { data: { user }, error } = await client.auth.getUser();
@@ -62,11 +104,19 @@ export async function getCurrentUser() {
 
 export function onAuthStateChange(callback) {
   const client = getSupabaseClient();
-  if (!client) {
-    return { data: { subscription: { unsubscribe: () => {} } } };
+  if (!client || isDemoMode()) {
+    authListeners.add(callback);
+    return {
+      data: {
+        subscription: {
+          unsubscribe: () => authListeners.delete(callback)
+        }
+      }
+    };
   }
 
   return client.auth.onAuthStateChange((event, session) => {
     callback(event, session);
   });
 }
+

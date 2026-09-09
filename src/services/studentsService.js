@@ -1,4 +1,5 @@
 import { getSupabaseClient } from '../lib/supabase';
+import { getMockStudents, setMockStudents } from './mockData';
 
 export function sanitizeStudent(student) {
   if (!student) return student;
@@ -9,7 +10,7 @@ export function sanitizeStudent(student) {
 export async function getStudents() {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized. Check Supabase credentials.');
+    return getMockStudents().map(sanitizeStudent);
   }
 
   const { data, error } = await client
@@ -28,7 +29,9 @@ export async function getStudents() {
 export async function getStudentById(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    const list = getMockStudents();
+    const found = list.find((s) => s.id === id);
+    return sanitizeStudent(found || null);
   }
 
   const { data, error } = await client
@@ -46,11 +49,6 @@ export async function getStudentById(id) {
 }
 
 export async function createStudent(studentData) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const sanitized = sanitizeStudent(studentData);
   const payload = {
     ...sanitized,
@@ -63,6 +61,15 @@ export async function createStudent(studentData) {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockStudents();
+    const newStudent = { ...payload, id: `std-${Date.now()}` };
+    list.unshift(newStudent);
+    setMockStudents(list);
+    return sanitizeStudent(newStudent);
+  }
 
   const { data, error } = await client
     .from('students')
@@ -79,11 +86,6 @@ export async function createStudent(studentData) {
 }
 
 export async function updateStudent(id, studentData) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const sanitized = sanitizeStudent(studentData);
   const payload = {
     ...sanitized,
@@ -95,6 +97,18 @@ export async function updateStudent(id, studentData) {
     placement_status: sanitized.placement_status === 'In Progress' ? 'Not Placed' : (sanitized.placement_status || 'Not Placed'),
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockStudents();
+    const index = list.findIndex((s) => s.id === id);
+    if (index !== -1) {
+      list[index] = { ...list[index], ...payload };
+      setMockStudents(list);
+      return sanitizeStudent(list[index]);
+    }
+    return null;
+  }
 
   const { data, error } = await client
     .from('students')
@@ -114,7 +128,9 @@ export async function updateStudent(id, studentData) {
 export async function deleteStudent(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    const list = getMockStudents().filter((s) => s.id !== id);
+    setMockStudents(list);
+    return true;
   }
 
   const { error } = await client
@@ -132,9 +148,6 @@ export async function deleteStudent(id) {
 
 export async function bulkUpsertStudents(importedStudents, updateExisting = true) {
   const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
 
   const cleaned = importedStudents.map((s) => {
     const sanitized = sanitizeStudent(s);
@@ -160,6 +173,22 @@ export async function bulkUpsertStudents(importedStudents, updateExisting = true
     };
   });
 
+  if (!client) {
+    const list = [...getMockStudents()];
+    cleaned.forEach((imp) => {
+      const idx = list.findIndex((s) => s.college_id === imp.college_id);
+      if (idx !== -1) {
+        if (updateExisting) {
+          list[idx] = { ...list[idx], ...imp };
+        }
+      } else {
+        list.push({ ...imp, id: `std-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`, created_at: new Date().toISOString() });
+      }
+    });
+    setMockStudents(list);
+    return list;
+  }
+
   const { data, error } = await client
     .from('students')
     .upsert(cleaned, { onConflict: 'college_id', ignoreDuplicates: !updateExisting })
@@ -172,3 +201,4 @@ export async function bulkUpsertStudents(importedStudents, updateExisting = true
 
   return data;
 }
+

@@ -1,9 +1,10 @@
 import { getSupabaseClient } from '../lib/supabase';
+import { getMockDriveLinks, setMockDriveLinks } from './mockData';
 
 export async function getDriveLinks() {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    return getMockDriveLinks();
   }
 
   const { data, error } = await client
@@ -20,11 +21,6 @@ export async function getDriveLinks() {
 }
 
 export async function createDriveLink(formData) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const payload = {
     title: formData.title.trim(),
     url: formData.url.trim(),
@@ -32,6 +28,15 @@ export async function createDriveLink(formData) {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockDriveLinks();
+    const newItem = { ...payload, id: `dl-${Date.now()}` };
+    list.unshift(newItem);
+    setMockDriveLinks(list);
+    return newItem;
+  }
 
   const { data, error } = await client
     .from('drive_links')
@@ -48,17 +53,24 @@ export async function createDriveLink(formData) {
 }
 
 export async function updateDriveLink(id, formData) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const payload = {
     title: formData.title.trim(),
     url: formData.url.trim(),
     description: formData.description ? formData.description.trim() : null,
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockDriveLinks();
+    const idx = list.findIndex((l) => l.id === id);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...payload };
+      setMockDriveLinks(list);
+      return list[idx];
+    }
+    return null;
+  }
 
   const { data, error } = await client
     .from('drive_links')
@@ -78,7 +90,8 @@ export async function updateDriveLink(id, formData) {
 export async function deleteDriveLink(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    setMockDriveLinks(getMockDriveLinks().filter((l) => l.id !== id));
+    return true;
   }
 
   const { error } = await client
@@ -93,3 +106,4 @@ export async function deleteDriveLink(id) {
 
   return true;
 }
+

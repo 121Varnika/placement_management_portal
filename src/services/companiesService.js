@@ -1,4 +1,10 @@
 import { getSupabaseClient } from '../lib/supabase';
+import { 
+  getMockCompanies, 
+  setMockCompanies, 
+  getMockRounds, 
+  setMockRounds 
+} from './mockData';
 
 export function sanitizeCompany(company) {
   if (!company) return company;
@@ -56,7 +62,7 @@ export function evaluateStudentEligibility(student, company) {
 export async function getCompanies() {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized. Check Supabase credentials.');
+    return getMockCompanies().map(sanitizeCompany);
   }
 
   const { data, error } = await client
@@ -75,7 +81,9 @@ export async function getCompanies() {
 export async function getCompanyById(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    const list = getMockCompanies();
+    const found = list.find((c) => c.id === id);
+    return sanitizeCompany(found || null);
   }
 
   const { data, error } = await client
@@ -93,11 +101,6 @@ export async function getCompanyById(id) {
 }
 
 export async function createCompany(companyData, rounds = []) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const sanitized = sanitizeCompany(companyData);
   const newCompany = {
     ...sanitized,
@@ -111,6 +114,29 @@ export async function createCompany(companyData, rounds = []) {
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockCompanies();
+    const createdComp = { ...newCompany, id: `c-${Date.now()}` };
+    list.unshift(createdComp);
+    setMockCompanies(list);
+
+    if (rounds && rounds.length > 0) {
+      const rList = getMockRounds();
+      const createdRounds = rounds.map((r, idx) => ({
+        id: `r-${Date.now()}-${idx}`,
+        company_id: createdComp.id,
+        round_number: r.round_number || idx + 1,
+        round_type: r.round_type,
+        round_date: r.round_date || null,
+        details: r.details || ''
+      }));
+      setMockRounds([...rList, ...createdRounds]);
+    }
+
+    return sanitizeCompany(createdComp);
+  }
 
   const { data: createdCompany, error: compErr } = await client
     .from('companies')
@@ -146,11 +172,6 @@ export async function createCompany(companyData, rounds = []) {
 }
 
 export async function updateCompany(id, companyData, rounds = null) {
-  const client = getSupabaseClient();
-  if (!client) {
-    throw new Error('Database client not initialized.');
-  }
-
   const sanitized = sanitizeCompany(companyData);
   const updatedCompany = {
     ...sanitized,
@@ -161,6 +182,31 @@ export async function updateCompany(id, companyData, rounds = null) {
     arrears_history_allowed: Boolean(sanitized.arrears_history_allowed),
     updated_at: new Date().toISOString()
   };
+
+  const client = getSupabaseClient();
+  if (!client) {
+    const list = getMockCompanies();
+    const index = list.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      list[index] = { ...list[index], ...updatedCompany };
+      setMockCompanies(list);
+    }
+
+    if (rounds !== null) {
+      const rList = getMockRounds().filter((r) => r.company_id !== id);
+      const newRounds = rounds.map((r, idx) => ({
+        id: r.id || `r-${Date.now()}-${idx}`,
+        company_id: id,
+        round_number: r.round_number || idx + 1,
+        round_type: r.round_type,
+        round_date: r.round_date || null,
+        details: r.details || ''
+      }));
+      setMockRounds([...rList, ...newRounds]);
+    }
+
+    return sanitizeCompany(list[index] || updatedCompany);
+  }
 
   const { data, error } = await client
     .from('companies')
@@ -211,7 +257,9 @@ export async function updateCompany(id, companyData, rounds = null) {
 export async function deleteCompany(id) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    setMockCompanies(getMockCompanies().filter((c) => c.id !== id));
+    setMockRounds(getMockRounds().filter((r) => r.company_id !== id));
+    return true;
   }
 
   const { error } = await client
@@ -230,7 +278,9 @@ export async function deleteCompany(id) {
 export async function getCompanyRounds(companyId) {
   const client = getSupabaseClient();
   if (!client) {
-    throw new Error('Database client not initialized.');
+    return getMockRounds()
+      .filter((r) => r.company_id === companyId)
+      .sort((a, b) => (a.round_number || 0) - (b.round_number || 0));
   }
 
   const { data, error } = await client
@@ -246,3 +296,4 @@ export async function getCompanyRounds(companyId) {
 
   return data || [];
 }
+

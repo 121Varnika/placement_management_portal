@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Lock, Mail, Eye, EyeOff, AlertCircle, ShieldAlert, Loader2 } from 'lucide-react';
+import { GraduationCap, Lock, Mail, Eye, EyeOff, AlertCircle, Sparkles, Loader2 } from 'lucide-react';
 import { signIn } from '../../services/authService';
 import { isSupabaseConfigured } from '../../lib/supabase';
 
@@ -12,17 +12,34 @@ export default function LoginPage({ onLoginSuccess }) {
 
   const configured = isSupabaseConfigured();
 
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    setErrorMessage(null);
+    try {
+      const data = await signIn('demo.mentor@college.edu', 'demo', true);
+      if (data?.user && onLoginSuccess) {
+        onLoginSuccess(data.user);
+      }
+    } catch (err) {
+      console.error('Demo sign-in error:', err);
+      setErrorMessage('Failed to enter demo mode: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!email.trim() || !password) {
-      setErrorMessage('Please enter both email address and password.');
+    if (!configured) {
+      // Automatically proceed in Demo Mode if Supabase is not configured
+      await handleDemoLogin();
       return;
     }
 
-    if (!configured) {
-      setErrorMessage('Supabase is not configured yet. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local');
+    if (!email.trim() || !password) {
+      setErrorMessage('Please enter both email address and password.');
       return;
     }
 
@@ -116,28 +133,49 @@ export default function LoginPage({ onLoginSuccess }) {
           </p>
         </div>
 
-        {/* Configuration Warning Notice if missing env */}
+        {/* Demo Mode Banner when Supabase is not configured */}
         {!configured && (
           <div style={{
-            backgroundColor: 'rgba(217, 119, 6, 0.12)',
-            border: '1px solid rgba(217, 119, 6, 0.3)',
-            borderRadius: '8px',
-            padding: '12px 14px',
+            backgroundColor: 'rgba(59, 130, 246, 0.12)',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            borderRadius: '10px',
+            padding: '14px 16px',
             marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'flex-start',
-            gap: '10px',
-            color: '#fde68a',
-            fontSize: '0.8rem',
+            color: '#93c5fd',
+            fontSize: '0.825rem',
             lineHeight: 1.45
           }}>
-            <ShieldAlert size={18} style={{ flexShrink: 0, marginTop: '2px', color: '#f59e0b' }} />
-            <div>
-              <strong style={{ color: '#fbbf24', display: 'block', marginBottom: '2px' }}>
-                Supabase Credentials Required
-              </strong>
-              Configure <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> in your <code>.env.local</code> file as documented in <code>SETUP.md</code>.
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', color: '#60a5fa', fontWeight: 600 }}>
+              <Sparkles size={18} />
+              <span>Demo Preview Mode Ready</span>
             </div>
+            <p style={{ margin: '0 0 10px 0', color: '#cbd5e1', fontSize: '0.8rem' }}>
+              Explore the entire portal, companies, students, candidate tracking, and placement analytics using interactive pre-seeded mock data without configuring Supabase credentials.
+            </p>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={loading}
+              style={{
+                width: '100%',
+                padding: '9px 12px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                color: '#ffffff',
+                backgroundColor: '#2563eb',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+              }}
+            >
+              <Sparkles size={16} />
+              <span>Explore Portal in Demo Mode</span>
+            </button>
           </div>
         )}
 
@@ -199,8 +237,8 @@ export default function LoginPage({ onLoginSuccess }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                autoFocus
-                required
+                autoFocus={configured}
+                required={configured}
               />
             </div>
           </div>
@@ -242,7 +280,7 @@ export default function LoginPage({ onLoginSuccess }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                required
+                required={configured}
               />
               <button
                 type="button"
@@ -291,10 +329,36 @@ export default function LoginPage({ onLoginSuccess }) {
                 <span>Authenticating...</span>
               </>
             ) : (
-              <span>Sign In to Portal</span>
+              <span>{configured ? 'Sign In to Portal' : 'Enter Demo Mode'}</span>
             )}
           </button>
         </form>
+
+        {/* Demo Mode explicit shortcut when Supabase is configured */}
+        {configured && (
+          <div style={{ marginTop: '14px', textAlign: 'center' }}>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              disabled={loading}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#3b82f6',
+                fontSize: '0.8rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                textDecoration: 'underline'
+              }}
+            >
+              <Sparkles size={14} />
+              <span>Or explore in Demo Mode without logging in</span>
+            </button>
+          </div>
+        )}
 
         {/* Security / Provisioning Notice */}
         <div style={{
@@ -316,3 +380,4 @@ export default function LoginPage({ onLoginSuccess }) {
     </div>
   );
 }
+

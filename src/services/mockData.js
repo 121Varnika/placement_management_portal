@@ -498,3 +498,70 @@ export const INITIAL_DRIVE_LINKS = [
   }
 ];
 
+// LocalStorage state management helpers for Demo Mode
+const STORAGE_KEYS = {
+  STUDENTS: 'pmp_demo_students',
+  COMPANIES: 'pmp_demo_companies',
+  ROUNDS: 'pmp_demo_rounds',
+  APPLICATIONS: 'pmp_demo_applications',
+  DRIVE_LINKS: 'pmp_demo_drive_links'
+};
+
+function getStoredOrDefault(key, defaultValue) {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : defaultValue;
+  } catch (e) {
+    return defaultValue;
+  }
+}
+
+function setStored(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.warn(`Failed to save ${key} to localStorage:`, e);
+  }
+}
+
+export function getMockStudents() {
+  return getStoredOrDefault(STORAGE_KEYS.STUDENTS, INITIAL_STUDENTS);
+}
+
+export function setMockStudents(students) {
+  setStored(STORAGE_KEYS.STUDENTS, students);
+}
+
+export function getMockCompanies() {
+  return getStoredOrDefault(STORAGE_KEYS.COMPANIES, INITIAL_COMPANIES);
+}
+
+export function setMockCompanies(companies) {
+  setStored(STORAGE_KEYS.COMPANIES, companies);
+}
+
+export function getMockRounds() {
+  return getStoredOrDefault(STORAGE_KEYS.ROUNDS, INITIAL_ROUNDS);
+}
+
+export function setMockRounds(rounds) {
+  setStored(STORAGE_KEYS.ROUNDS, rounds);
+}
+
+export function getMockApplications() {
+  return getStoredOrDefault(STORAGE_KEYS.APPLICATIONS, INITIAL_APPLICATIONS);
+}
+
+export function setMockApplications(apps) {
+  setStored(STORAGE_KEYS.APPLICATIONS, apps);
+}
+
+export function getMockDriveLinks() {
+  return getStoredOrDefault(STORAGE_KEYS.DRIVE_LINKS, INITIAL_DRIVE_LINKS);
+}
+
+export function setMockDriveLinks(links) {
+  setStored(STORAGE_KEYS.DRIVE_LINKS, links);
+}
+
+
